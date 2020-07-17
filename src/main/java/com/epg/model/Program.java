@@ -2,11 +2,13 @@ package com.epg.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
-//@Entity
-//@Table(name = "program")
+@Entity
+@Table(name = "program")
 public class Program {
 	private String id;
 	private String channelId;
@@ -16,9 +18,12 @@ public class Program {
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
 	
+	public Program() {
+		
+	}
+	
 	public Program(String channelId, String imageUrl, String title, String description, LocalDateTime startTime,
 			LocalDateTime endTime) {
-		super();
 		this.channelId = channelId;
 		this.imageUrl = imageUrl;
 		this.title = title;
@@ -27,6 +32,7 @@ public class Program {
 		this.endTime = endTime;
 	}
 	
+	@Id
 	public String getId() {
 		return id;
 	}
@@ -35,6 +41,7 @@ public class Program {
 		this.id = id;
 	}
 	
+	@Column(name = "channel_id", nullable = false)
 	public String getChannelId() {
 		return channelId;
 	}
@@ -43,6 +50,7 @@ public class Program {
 		this.channelId = channelId;
 	}
 	
+	@Column(name = "image_url", nullable = false)
 	public String getImageUrl() {
 		return imageUrl;
 	}
@@ -51,6 +59,7 @@ public class Program {
 		this.imageUrl = imageUrl;
 	}
 	
+	@Column(name = "title", nullable = false)
 	public String getTitle() {
 		return title;
 	}
@@ -59,6 +68,7 @@ public class Program {
 		this.title = title;
 	}
 	
+	@Column(name = "description", nullable = false)
 	public String getDescription() {
 		return description;
 	}
@@ -67,6 +77,7 @@ public class Program {
 		this.description = description;
 	}
 	
+	@Column(name = "start_time", nullable = false)
 	public LocalDateTime getStartTime() {
 		return startTime;
 	}
@@ -75,6 +86,7 @@ public class Program {
 		this.startTime = startTime;
 	}
 	
+	@Column(name = "end_time", nullable = false)
 	public LocalDateTime getEndTime() {
 		return endTime;
 	}

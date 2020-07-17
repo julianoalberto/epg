@@ -8,7 +8,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "channel")
 public class Channel {
-
     private String id;
     private String name;
     private int position;
