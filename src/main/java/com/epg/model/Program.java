@@ -18,20 +18,6 @@ public class Program {
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
 	
-	public Program() {
-		
-	}
-	
-	public Program(String channelId, String imageUrl, String title, String description, LocalDateTime startTime,
-			LocalDateTime endTime) {
-		this.channelId = channelId;
-		this.imageUrl = imageUrl;
-		this.title = title;
-		this.description = description;
-		this.startTime = startTime;
-		this.endTime = endTime;
-	}
-	
 	@Id
 	public String getId() {
 		return id;

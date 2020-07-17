@@ -13,16 +13,6 @@ public class Channel {
     private int position;
     private String category;
 
-    public Channel() {
-
-    }
-
-    public Channel(String name, int position, String category) {
-        this.setName(name);
-        this.setPosition(position);
-        this.category = category;
-    }
-
     @Id
     public String getId() {
         return id;
