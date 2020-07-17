@@ -1,17 +1,23 @@
 package com.epg.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.epg.exception.ResourceNotFoundException;
@@ -25,8 +31,13 @@ public class ProgramController {
     private ProgramRepository programRepository;
 
     @GetMapping("/programs")
-    public List<Program> getAll() {
-        return programRepository.findAll();
+    public List<Program> getByChannelIdOrAll(@RequestParam Optional<String> channelId) {
+        if (channelId.isPresent()) {
+        	List<Program> programs = programRepository.findAll();
+        	return programs.stream().filter(channel -> channelId.get().equals(channel.getChannelId())).collect(Collectors.toList());
+        } else {
+        	return programRepository.findAll();
+        }
     }
     
     @PostMapping("/programs/create")
@@ -35,8 +46,10 @@ public class ProgramController {
     }
     
     @GetMapping("/programs/{id}")
-    public ResponseEntity<Program> getById(@PathVariable(value = "id") String programId) throws ResourceNotFoundException {
-        Program program = programRepository.findById(programId).orElseThrow(() -> new ResourceNotFoundException("Program not found for this id :: " + programId));
+    public ResponseEntity<Program> getById(@PathVariable(value = "id") String programId) 
+    		throws ResourceNotFoundException {
+        Program program = programRepository.findById(programId)
+        		.orElseThrow(() -> new ResourceNotFoundException("Program not found for this id :: " + programId));
         return ResponseEntity.ok().body(program);
     }
     
@@ -55,5 +68,17 @@ public class ProgramController {
         
         final Program updatedProgram = programRepository.save(program);
         return ResponseEntity.ok(updatedProgram);
+    }
+    
+    @DeleteMapping("/programs/{id}")
+    public Map<String, Boolean> delete(@PathVariable(value = "id") String programId)
+    		throws ResourceNotFoundException {
+        Program program = programRepository.findById(programId)
+            .orElseThrow(() -> new ResourceNotFoundException("Program not found for this id :: " + programId));
+
+        programRepository.delete(program);
+        Map<String, Boolean> response = new HashMap<> ();
+        response.put("deleted", Boolean.TRUE);
+        return response;
     }
 }
